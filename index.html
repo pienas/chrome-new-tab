@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Naujas skirtukas</title>
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./static/css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="./static/css/style.css" />
+  </head>
+  <body class="bg-gray-100">
+    <div id="bookmarks" class="hidden">
+      <div class="flex justify-center m-16 mb-8">
+        <div class="relative w-full md:w-1/2 lg:w-1/3">
+          <form action="https://google.lt/search">
+            <span
+              class="absolute z-10 items-center justify-center w-8 h-full py-3 pl-3 text-base font-normal leading-snug text-center text-gray-700 bg-transparent rounded"
+            >
+              <svg fill="currentColor" viewBox="0 0 19.61 19.61">
+                <path
+                  d="M8.29 16.59a8.3 8.3 0 118.3-8.3 8.3 8.3 0 01-8.3 8.3zm0-15.08a6.79 6.79 0 106.79 6.78 6.79 6.79 0 00-6.79-6.78zM18.85 19.61a.79.79 0 01-.53-.22l-3.09-3.1a.75.75 0 011.06-1.06l3.09 3.09a.75.75 0 010 1.07.77.77 0 01-.53.22z"
+                ></path>
+              </svg>
+            </span>
+            <input
+              id="search"
+              name="q"
+              autocomplete="off"
+              placeholder="Paieška"
+              class="relative w-full px-3 py-3 pl-10 text-sm text-gray-700 placeholder-gray-400 bg-white rounded-full shadow outline-none search focus:outline-none focus:shadow-outline"
+              list="card_categories"
+              id="bookmark_search_input"
+            />
+          </form>
+          <div class="flex justify-center mt-5">
+            <div
+              class="inline-flex text-sm leading-none text-gray-500 bg-gray-200 border-2 border-gray-200 rounded-full"
+              id="filter__site_cards"
+            >
+              <button
+                class="inline-flex items-center px-4 py-2 rounded-l-full focus:outline-none hover:text-purple-700 focus:text-purple-700"
+                id="filter__by_starred"
+              >
+                <svg
+                  class="w-4 h-4 mr-2 fill-current"
+                  fill="currentColor"
+                  viewbox="0 0 19.61 18.85"
+                >
+                  <path
+                    d="M14.54 18.85a3.71 3.71 0 01-1.72-.48l-3-1.58-3 1.58a3.74 3.74 0 01-1.72.48 2 2 0 01-1.61-.71A3 3 0 013 15.6l.58-3.36-2.47-2.38C-.16 8.62-.07 7.57.1 7.05s.71-1.42 2.46-1.68l3.38-.49 1.5-3C8.23.24 9.26 0 9.8 0s1.58.24 2.36 1.83l1.51 3.05 3.33.49c1.76.26 2.3 1.16 2.47 1.68s.26 1.57-1 2.81l-2.44 2.38.58 3.36a3 3 0 01-.49 2.54 2.06 2.06 0 01-1.58.71zM9.8 15.18a.73.73 0 01.35.09L13.52 17a2.27 2.27 0 001 .3.56.56 0 00.46-.17 1.75 1.75 0 00.15-1.32l-.64-3.75a.76.76 0 01.21-.66l2.73-2.66c.48-.47.72-1 .63-1.26s-.56-.48-1.23-.61l-3.77-.55a.78.78 0 01-.57-.41l-1.68-3.42c-.3-.6-.69-1-1-1s-.7.38-1 1l-1.7 3.42a.76.76 0 01-.57.41l-3.76.55c-.67.09-1.15.34-1.25.65s.14.79.63 1.26l2.72 2.66a.74.74 0 01.22.66l-.64 3.75a1.7 1.7 0 00.15 1.32.56.56 0 00.46.17 2.21 2.21 0 001-.3l3.37-1.77a.73.73 0 01.36-.09z"
+                  ></path>
+                </svg>
+                <span>Pažymėti</span>
+              </button>
+              <button
+                class="inline-flex items-center px-4 py-2 rounded-r-full whitespace-nowrap focus:outline-none hover:text-purple-700 focus:text-purple-700 toggle__active"
+                id="filter__by_all"
+              >
+                <svg
+                  class="w-4 h-4 mr-2 stroke-current"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  viewbox="0 0 24 24"
+                >
+                  <path
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  ></path>
+                </svg>
+                <span>Visi</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="bookmark_cards"
+        class="grid justify-center min-h-screen grid-cols-1 gap-8 px-10 py-6 mx-auto sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 xl:px-5 max-w-screen-2xl"
+      >
+        <div
+          id="addNewBookmarkUI"
+          class="flex items-center justify-center p-5 bg-gray-100 border-2 border-dashed cursor-pointer h-30 rounded-lg"
+        >
+          <div class="w-11/12 text-center text-gray-300 h-11/12">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+              class="w-full"
+            >
+              <svg
+                fill="none"
+                class="w-18 h-18"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                stroke="currentColor"
+                viewbox="0 0 24 24"
+              >
+                <path d="M12 4v16m8-8H4"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg text-gray-400">Sukurti naują kortelę</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="settings" class="hidden">
+      <div class="container flex flex-row justify-center h-screen py-6 mx-auto">
+        <div
+          class="w-1/2 max-h-full p-8 overflow-y-auto scrolling-touch bg-white shadow-md overflow__block scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray"
+        >
+          <div class="content">
+            <div class="text-center header">
+              <h3 class="pb-1 text-xl tracking-wide text-purple-700">
+                <b>Nustatymai</b>
+              </h3>
+              <hr class="mt-5 mb-8" />
+            </div>
+          </div>
+          <div class="content">
+            <details open>
+              <summary
+                class="block px-1 py-1 mr-auto text-lg font-bold tracking-wide text-gray-700 truncate cursor-pointor w-100"
+              >
+                Susieti su GitHub Gist
+              </summary>
+              <div class="p-5 my-3 mb-5 bg-gray-100">
+                <div class="mb-4">
+                  <label for="" class="block mb-2 text-base text-gray-400"
+                    >GitHub asmeninis Token</label
+                  >
+                  <input
+                    type="text"
+                    id="g__token"
+                    name="g__token"
+                    placeholder="Asmeninis Token"
+                    autocomplete="off"
+                    class="w-full px-2 py-2 text-sm text-gray-400 placeholder-gray-400 bg-white border border-gray-200 rounded shadow outline-none focus:border-gray-400 focus:outline-none ocus:shadow-outline"
+                  />
+                </div>
+                <div class="hidden mb-4" id="gist_block">
+                  <label for="" class="block mb-2 text-base text-gray-400"
+                    >Gist ID
+                    <a
+                      id="delete__existing_gist"
+                      href="#!"
+                      class="float-right text-red-700"
+                      title="Ištrinkite šį Gist, kad galėtumėte sukurti naują"
+                      ><small>Ištrinti šį Gist</small></a
+                    ></label
+                  >
+                  <input
+                    type="text"
+                    id="g__id"
+                    name="g__id"
+                    disabled
+                    placeholder="Galite palikti tuščią."
+                    autocomplete="off"
+                    class="w-full px-2 py-2 text-sm text-gray-400 placeholder-gray-400 bg-white border border-gray-200 rounded shadow outline-none disabled:opacity-75 focus:border-gray-400 focus:outline-none ocus:shadow-outline"
+                  />
+                </div>
+                <div class="hidden mb-4" id="importbackupBlock">
+                  <label for="" class="block mb-2 text-base text-gray-400"
+                    >Egzistuojantis Gist ID
+                    <span
+                      class="inline-block w-4 h-4 pt-1 text-gray-500"
+                      title="Atidarykite savo atsarginę kopiją naršyklėje ir nukopijuokite URL dalį po jūsų vartotojo vardo/"
+                    >
+                      <svg
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    id="ex-g__id"
+                    name="ex-g__id"
+                    placeholder="Jūsų egzistuojantis Gist ID"
+                    autocomplete="off"
+                    class="w-full px-2 py-2 text-sm text-gray-400 placeholder-gray-400 bg-white border border-gray-200 rounded shadow outline-none disabled:opacity-75 focus:border-gray-400 focus:outline-none ocus:shadow-outline"
+                  />
+                  <div class="flex items-center mt-3">
+                    <button
+                      id="g__importData"
+                      class="inline-flex px-4 py-2 mb-1 mr-2 text-xs font-bold text-white uppercase bg-gray-800 rounded shadow outline-none active:bg-gray-900 hover:shadow-md focus:outline-none"
+                      type="button"
+                      style="transition: all 0.15s ease"
+                    >
+                      <svg
+                        class="w-4 h-4 mr-2 fill-current"
+                        fill="currentColor"
+                        viewBox="0 0 19.61 16.59"
+                      >
+                        <path
+                          d="M15.08 16.59H4.52A4.53 4.53 0 010 12.07V4.53a.76.76 0 111.51 0v7.54a3 3 0 003 3h10.57a3 3 0 003-3V4.53a.76.76 0 111.51 0v7.54a4.53 4.53 0 01-4.51 4.52z"
+                        ></path>
+                        <path
+                          d="M13.72 4.64a.77.77 0 01-.53-.22l-2.58-2.58a1.17 1.17 0 00-1.61 0L6.42 4.42a.76.76 0 01-1.07-1.07L7.93.77a2.66 2.66 0 013.75 0l2.57 2.58a.75.75 0 010 1.07.77.77 0 01-.53.22z"
+                        ></path>
+                        <path
+                          d="M9.8 10.94a.76.76 0 01-.75-.76V3.77a.76.76 0 011.51 0v6.41a.76.76 0 01-.76.76z"
+                        ></path>
+                      </svg>
+                      <span> Įkelti informaciją </span>
+                    </button>
+                    <span class="text-red-600"
+                      >Tai ištrins visą esamą informaciją</span
+                    >
+                  </div>
+                </div>
+                <div class="flex justify-between mb-4">
+                  <label
+                    class="block text-gray-400"
+                    for="g__public"
+                    title="Pasiekiamas tik kuriant naują Gist"
+                  >
+                    <input
+                      class="leading-tight"
+                      type="checkbox"
+                      id="g__public"
+                      name="g__public"
+                    />
+                    <span class="text-sm">
+                      Padaryti viešą
+                      <span
+                        class="inline-block w-4 h-4 pt-1 text-gray-500"
+                        title="Ši funkcija pasiekiama tik kuriant naują Gist. Norėdami pakeisti reikšmę, ištrinkite šį Gist ir sukurkite naują."
+                      >
+                        <svg
+                          class="w-4 h-4 mr-2 fill-current"
+                          fill="currentColor"
+                          viewBox="0 0 29.42 24.89"
+                        >
+                          <path
+                            d="M18.85 19.61a.74.74 0 01-.53-.23l-2.14-2.13a9.8 9.8 0 113.43-7.45v9.05a.76.76 0 01-.47.7.72.72 0 01-.29.06zm-9-18.1a8.3 8.3 0 105.87 14.16.78.78 0 011.07 0L18.1 17V9.8a8.3 8.3 0 00-8.3-8.29z"
+                          ></path>
+                          <path
+                            d="M9.8 13.1a.76.76 0 01-.75-.75v-1.42a.76.76 0 01.75-.75 2.08 2.08 0 10-2.07-2.07.76.76 0 01-1.51 0 3.58 3.58 0 114.34 3.5v.74a.76.76 0 01-.76.75zM9.8 15.38a.77.77 0 01-.53-.22.75.75 0 01-.22-.53.76.76 0 111.51 0 .75.75 0 01-.22.53.77.77 0 01-.54.22z"
+                          ></path>
+                        </svg>
+                      </span>
+                    </span>
+                  </label>
+                  <a
+                    href="#"
+                    id="importBackupTrigger"
+                    class="text-sm text-purple-700 border-b-2 border-purple-500"
+                    >Atkurti duomenis</a
+                  >
+                </div>
+                <div class="px-6 py-4 mb-4 bg-gray-200 rounded">
+                  <h4 class="mb-2 text-gray-600">
+                    <strong>Kaip sukurti GitHub token?</strong>
+                  </h4>
+                  <p class="text-gray-600">
+                    Spauskite šią
+                    <strong>
+                      <a
+                        href="https://github.com/settings/tokens/new"
+                        class="text-purple-700"
+                        >Sukurti GitHub Token</a
+                      >
+                    </strong>
+                    nuorodą ir prisijunkite prie savo paskyros. Pažymėkite
+                    <strong>Gist (Create gists)</strong> sąraše ir spauskite
+                    <strong>Generate Token</strong> mygtuką. Nukopijuokite gautą
+                    Token reikšmę ir įklijuokite ją čia.
+                  </p>
+                </div>
+                <div class="flex">
+                  <button
+                    id="g__syncData"
+                    class="inline-flex px-4 py-2 mb-1 mr-1 mr-auto text-xs font-bold text-white uppercase bg-purple-700 rounded shadow outline-none active:bg-purple-800 hover:shadow-md focus:outline-none"
+                    type="button"
+                    style="transition: all 0.15s ease"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2 fill-current"
+                      fill="currentColor"
+                      viewBox="0 0 19.61 19.6"
+                    >
+                      <path
+                        d="M1.72 18.64a.76.76 0 01-.72-.75v-2.22a1.91 1.91 0 011.91-1.91h2.18a.76.76 0 010 1.51H2.87a.4.4 0 00-.4.4v2.22a.76.76 0 01-.75.75z"
+                      ></path>
+                      <path
+                        d="M9.79 19.6a9.74 9.74 0 01-6-2.06.74.74 0 01-.13-1.05.76.76 0 011.06-.14 8.3 8.3 0 0011-.68.75.75 0 011.06 1.06 9.79 9.79 0 01-6.99 2.87zM.75 10.55A.75.75 0 010 9.8a9.73 9.73 0 012.87-6.93.75.75 0 011.07 1.06A8.25 8.25 0 001.51 9.8a.75.75 0 01-.76.75zM16.73 5.84h-2.21a.75.75 0 01-.76-.75.76.76 0 01.76-.76h2.21a.41.41 0 00.4-.41v-2.2a.76.76 0 111.51 0v2.21a1.9 1.9 0 01-1.91 1.91z"
+                      ></path>
+                      <path
+                        d="M3.4 4.16a.76.76 0 01-.53-1.29 9.82 9.82 0 0113-.81.76.76 0 11-.93 1.19 8.3 8.3 0 00-11 .68.76.76 0 01-.54.23zM16.2 17a.75.75 0 01-.53-1.28A8.28 8.28 0 0018.1 9.8a.76.76 0 011.51 0 9.7 9.7 0 01-2.88 6.93.73.73 0 01-.53.27z"
+                      ></path>
+                    </svg>
+                    <span> Atnaujinti duomenis </span>
+                  </button>
+                  <button
+                    id="download__as_json"
+                    class="inline-flex px-4 py-2 mb-1 mr-1 text-xs font-bold text-white uppercase bg-gray-500 rounded shadow outline-none active:bg-gray-600 hover:shadow-md focus:outline-none"
+                    type="button"
+                    style="transition: all 0.15s ease"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2 fill-current"
+                      fill="currentColor"
+                      viewBox="0 0 19.61 16.59"
+                    >
+                      <path
+                        d="M4.52 0h10.56a4.53 4.53 0 014.53 4.52v7.54a.76.76 0 01-.76.76.75.75 0 01-.75-.76V4.52a3 3 0 00-3-3H4.52a3 3 0 00-3 3v7.54a.76.76 0 11-1.51 0V4.52A4.53 4.53 0 014.52 0z"
+                      ></path>
+                      <path
+                        d="M5.89 12a.79.79 0 01.53.22L9 14.75a1.17 1.17 0 001.61 0l2.57-2.58a.77.77 0 011.07 0 .75.75 0 010 1.07l-2.58 2.58a2.65 2.65 0 01-3.74 0l-2.58-2.58a.77.77 0 010-1.07.79.79 0 01.54-.17z"
+                      ></path>
+                      <path
+                        d="M9.8 5.66a.75.75 0 01.76.75v6.41a.76.76 0 01-1.51 0V6.41a.75.75 0 01.75-.75z"
+                      ></path>
+                    </svg>
+                    <span> Parsisiųti JSON </span>
+                  </button>
+                </div>
+                <p id="last_sync_info" class="text-gray-500"></p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fixed top-0 left-0 m-4">
+      <div
+        id="showSettings"
+        class="w-12 h-12 p-3 m-1 overflow-hidden bg-purple-700 rounded-full shadow-sm"
+      >
+        <a class="text-white" href="#!" title="Nustatymai">
+          <span class="stroke-current">
+            <svg
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              ></path>
+              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </span>
+          <span class="settings__go-back"
+            ><svg
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+    <div class="fixed top-0 right-0 m-4">
+      <div
+        id="showDarkMode"
+        class="w-12 h-12 p-3 m-1 overflow-hidden bg-black rounded-full shadow-sm dark"
+      >
+        <a href="#!" title="Spalvų rėžimas">
+          <span class="fill-current darkMode__go">
+            <svg fill="currentColor" viewBox="0 0 202.748 202.748">
+              <path
+                d="M199.876 119.867c-2.405-1.886-5.715-2.124-8.366-.6-12.57 7.225-25.856 10.889-39.489 10.889-43.804 0-79.44-35.638-79.44-79.443 0-13.693 3.669-26.961 10.906-39.434 1.537-2.648 1.309-5.965-.576-8.379C81.027.486 77.864-.541 74.922.309c-21.161 6.1-40.207 19.042-53.629 36.441C7.363 54.809 0 76.437 0 99.297c0 57.035 46.4 103.438 103.434 103.438 22.86 0 44.493-7.36 62.561-21.286 17.411-13.419 30.359-32.454 36.459-53.6.848-2.938-.172-6.095-2.578-7.982zm-96.442 67.867C54.671 187.734 15 148.061 15 99.297c0-32.898 18.825-62.836 47.436-77.882-3.228 9.485-4.855 19.284-4.855 29.298 0 52.076 42.366 94.443 94.44 94.443 10 0 19.816-1.634 29.347-4.873-15.044 28.617-45.008 47.451-77.934 47.451z"
+              ></path>
+            </svg>
+          </span>
+          <span class="fill-current darkMode__go-back hidden"
+            ><svg fill="currentColor" viewBox="0 0 302.4 302.4">
+              <path
+                d="M204.8 97.6C191.2 84 172 75.2 151.2 75.2s-40 8.4-53.6 22.4c-13.6 13.6-22.4 32.8-22.4 53.6s8.8 40 22.4 53.6c13.6 13.6 32.8 22.4 53.6 22.4s40-8.4 53.6-22.4c13.6-13.6 22.4-32.8 22.4-53.6s-8.4-40-22.4-53.6zm-14.4 92.8c-10 10-24 16-39.2 16s-29.2-6-39.2-16-16-24-16-39.2 6-29.2 16-39.2 24-16 39.2-16 29.2 6 39.2 16 16 24 16 39.2-6 29.2-16 39.2zM292 140.8h-30.8c-5.6 0-10.4 4.8-10.4 10.4 0 5.6 4.8 10.4 10.4 10.4H292c5.6 0 10.4-4.8 10.4-10.4 0-5.6-4.8-10.4-10.4-10.4zM151.2 250.8c-5.6 0-10.4 4.8-10.4 10.4V292c0 5.6 4.8 10.4 10.4 10.4 5.6 0 10.4-4.8 10.4-10.4v-30.8c0-5.6-4.8-10.4-10.4-10.4zM258 243.6l-22-22c-3.6-4-10.4-4-14.4 0s-4 10.4 0 14.4l22 22c4 4 10.4 4 14.4 0s4-10.4 0-14.4zM151.2 0c-5.6 0-10.4 4.8-10.4 10.4v30.8c0 5.6 4.8 10.4 10.4 10.4 5.6 0 10.4-4.8 10.4-10.4V10.4c0-5.6-4.8-10.4-10.4-10.4zM258.4 44.4c-4-4-10.4-4-14.4 0l-22 22c-4 4-4 10.4 0 14.4 3.6 4 10.4 4 14.4 0l22-22c4-4 4-10.4 0-14.4zM41.2 140.8H10.4c-5.6 0-10.4 4.8-10.4 10.4s4.4 10.4 10.4 10.4h30.8c5.6 0 10.4-4.8 10.4-10.4 0-5.6-4.8-10.4-10.4-10.4zM80.4 221.6c-3.6-4-10.4-4-14.4 0l-22 22c-4 4-4 10.4 0 14.4s10.4 4 14.4 0l22-22c4-4 4-10.4 0-14.4zM80.4 66.4l-22-22c-4-4-10.4-4-14.4 0s-4 10.4 0 14.4l22 22c4 4 10.4 4 14.4 0s4-10.4 0-14.4z"
+              ></path>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+    <div
+      class="fixed top-0 left-0 z-10 flex items-center justify-center w-full h-full opacity-0 pointer-events-none modal"
+    >
+      <div
+        class="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"
+      ></div>
+      <div
+        class="z-50 w-11/12 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md"
+      >
+        <div
+          class="absolute top-0 right-0 z-50 flex flex-col items-center mt-4 mr-4 text-sm text-white cursor-pointer modal-close"
+        >
+          <svg
+            class="text-white fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewbox="0 0 24 24"
+          >
+            <path
+              d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+            ></path>
+          </svg>
+          <span class="text-sm">(Esc)</span>
+        </div>
+        <div class="px-6 py-4 text-left modal-content">
+          <div class="flex items-center justify-between pb-3">
+            <p class="text-xl font-bold" id="dynamicModalTitle">
+              Sukurti naują kortelę
+            </p>
+            <div class="z-50 cursor-pointer modal-close">
+              <svg
+                class="fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewbox="0 0 18 18"
+              >
+                <path
+                  d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <form id="addBookmarkform" class="hidden">
+            <div class="relative flex flex-wrap items-stretch w-full my-3 mb-5">
+              <span
+                class="absolute z-10 items-center justify-center w-8 h-full py-3 pl-3 text-base font-normal leading-snug text-center text-gray-400 bg-transparent rounded"
+              >
+                <svg fill="currentColor" viewbox="0 0 19.61 16.45">
+                  <path
+                    d="M.75 16.45a1 1 0 01-.24 0 .77.77 0 01-.51-.76A12.89 12.89 0 0112.12 2.84V1.73c0-1.28.71-1.73 1.32-1.73a1.91 1.91 0 011.31.64l4.08 4.09a2.65 2.65 0 010 3.74l-4.08 4.09a1.87 1.87 0 01-1.31.64c-.61 0-1.32-.45-1.32-1.73V10.4a14.28 14.28 0 00-10.76 5.74.75.75 0 01-.61.31zM13.63 1.66v1.91a.75.75 0 01-.76.75 11.4 11.4 0 00-11.14 9.1 15.79 15.79 0 0111.14-4.54.75.75 0 01.76.75v1.91l4.09-4.08a1.16 1.16 0 000-1.62l-4.04-4.13z"
+                  ></path>
+                </svg>
+              </span>
+              <input
+                type="url"
+                required
+                id="bookmark_url"
+                name="bookmark_url"
+                placeholder="URL*"
+                autocomplete="off"
+                class="relative w-full px-3 py-3 pl-10 text-sm text-gray-700 placeholder-gray-400 bg-white rounded shadow outline-none focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div class="relative flex flex-wrap items-stretch w-full my-3 mb-5">
+              <span
+                class="absolute z-10 items-center justify-center w-8 h-full py-3 pl-3 text-base font-normal leading-snug text-center text-gray-400 bg-transparent rounded"
+              >
+                <svg fill="currentColor" viewbox="0 0 19.61 19.61">
+                  <path
+                    d="M15.08 19.61H4.53A4.53 4.53 0 010 15.08V4.53A4.53 4.53 0 014.53 0h6a.76.76 0 010 1.51h-6a3 3 0 00-3 3v10.57a3 3 0 003 3h10.55a3 3 0 003-3v-6a.76.76 0 011.51 0v6a4.53 4.53 0 01-4.51 4.53z"
+                  ></path>
+                  <path
+                    d="M17.24 7.39a.75.75 0 01-.54-.22l-4.26-4.26a.75.75 0 010-1.07.74.74 0 011.06 0l4.27 4.26a.77.77 0 010 1.07.74.74 0 01-.53.22z"
+                  ></path>
+                  <path
+                    d="M17.24 7.39a.75.75 0 01-.54-.22.77.77 0 010-1.07L17.77 5a1.13 1.13 0 000-1.6l-1.6-1.6a1.13 1.13 0 00-1.6 0L13.5 2.91a.75.75 0 11-1.06-1.07L13.5.77a2.65 2.65 0 013.74 0l1.6 1.6a2.66 2.66 0 010 3.73l-1.07 1.07a.74.74 0 01-.53.22zM10 14.59H5.77a.75.75 0 01-.77-.76V9.57A.75.75 0 015.24 9l5.06-5a.77.77 0 011.07 0 .75.75 0 010 1.07L6.53 9.88v3.2h3.2l4.84-4.84a.75.75 0 111.07 1.06l-5.07 5.07a.75.75 0 01-.57.22z"
+                  ></path>
+                </svg>
+              </span>
+              <input
+                type="text"
+                required
+                id="bookmark_title"
+                name="bookmark_title"
+                maxlength="100"
+                autocomplete="off"
+                placeholder="Pavadinimas*"
+                class="relative w-full px-3 py-3 pl-10 text-sm text-gray-700 placeholder-gray-400 bg-white rounded shadow outline-none focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div class="relative flex flex-wrap items-stretch w-full my-3 mb-5">
+              <span
+                class="absolute z-10 items-center justify-center w-8 h-full py-3 pl-3 text-base font-normal leading-snug text-center text-gray-400 bg-transparent rounded"
+              >
+                <svg fill="currentColor" viewbox="0 0 19.61 19.61">
+                  <path
+                    d="M15.08 19.61H4.53A4.53 4.53 0 010 15.08V4.53A4.53 4.53 0 014.53 0h6a.76.76 0 010 1.51h-6a3 3 0 00-3 3v10.57a3 3 0 003 3h10.55a3 3 0 003-3v-6a.76.76 0 011.51 0v6a4.53 4.53 0 01-4.51 4.53z"
+                  ></path>
+                  <path
+                    d="M17.24 7.39a.75.75 0 01-.54-.22l-4.26-4.26a.75.75 0 010-1.07.74.74 0 011.06 0l4.27 4.26a.77.77 0 010 1.07.74.74 0 01-.53.22z"
+                  ></path>
+                  <path
+                    d="M17.24 7.39a.75.75 0 01-.54-.22.77.77 0 010-1.07L17.77 5a1.13 1.13 0 000-1.6l-1.6-1.6a1.13 1.13 0 00-1.6 0L13.5 2.91a.75.75 0 11-1.06-1.07L13.5.77a2.65 2.65 0 013.74 0l1.6 1.6a2.66 2.66 0 010 3.73l-1.07 1.07a.74.74 0 01-.53.22zM10 14.59H5.77a.75.75 0 01-.77-.76V9.57A.75.75 0 015.24 9l5.06-5a.77.77 0 011.07 0 .75.75 0 010 1.07L6.53 9.88v3.2h3.2l4.84-4.84a.75.75 0 111.07 1.06l-5.07 5.07a.75.75 0 01-.57.22z"
+                  ></path>
+                </svg>
+              </span>
+              <input
+                type="text"
+                id="bookmark_desc"
+                name="bookmark_desc"
+                autocomplete="off"
+                maxlength="100"
+                value=""
+                placeholder="Aprašymas"
+                class="relative w-full px-3 py-3 pl-10 text-sm text-gray-700 placeholder-gray-400 bg-white rounded shadow outline-none focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div class="text-center">
+              <input type="hidden" name="category_id" id="category_id" />
+              <button
+                type="submit"
+                id="addBookmarkBtn"
+                class="px-4 py-2 mb-1 mr-1 text-xs font-bold text-white uppercase align-middle bg-purple-700 rounded-full shadow outline-none active:bg-purple-800 focus:outline-none"
+                style="transition: all 0.15s ease"
+              >
+                <span class="">
+                  <svg
+                    class="relative inline-block w-4 h-4 -mt-1"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    viewbox="0 0 24 24"
+                  >
+                    <path d="M12 4v16m8-8H4"></path>
+                  </svg>
+                </span>
+                Pridėti puslapį
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="./static/js/jquery-3.5.0.min.js"></script>
+    <script src="./static/js/jquery-ui.min.js"></script>
+    <script src="./static/js/sortable.min.js"></script>
+    <script src="./static/js/mark.min.js"></script>
+    <script src="./static/js/settings.js"></script>
+    <script src="./static/js/modal.js"></script>
+    <script src="./static/js/bookmarks.js"></script>
+  </body>
+</html>
